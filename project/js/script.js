@@ -1,29 +1,35 @@
-/* Задания на урок:
+window.addEventListener('DOMContentLoaded', () => {
+    const body = document.querySelector('body');
+    let userName = document.querySelector('H1')
+    let textNodes = [];
 
-1) Удалить все рекламные блоки со страницы (правая часть сайта)
+    function recurcy (element) {
+        element.childNodes.forEach(node => {
+            
+            if (node.nodeName === 'DD') {
+                const obj = {
+                    url: node.baseURI,
+                    Name: userName.textContent,
+                    content: node.textContent.replace(/ +/g, ' ').trim()
+                };
+                
+                textNodes.push(obj);
+            } else {
+                recurcy(node);
+            }
 
-2) Изменить жанр фильма, поменять "комедия" на "драма"
+        });
+    }
+    recurcy(body);
+    console.log(JSON.stringify(textNodes));
+    
+    function download(content, fileName, contentType) {
+        var a = document.createElement("a");
+        var file = new Blob([content], {type: contentType});
+        a.href = URL.createObjectURL(file);
+        a.download = fileName;
+        a.click();
+    }
 
-3) Изменить задний фон постера с фильмом на изображение "bg.jpg". Оно лежит в папке img.
-Реализовать только при помощи JS
-
-4) Список фильмов на странице сформировать на основании данных из этого JS файла.
-Отсортировать их по алфавиту 
-
-5) Добавить нумерацию выведенных фильмов */
-
-'use strict';
-
-const movieDB = {
-    movies: [
-        "Логан",
-        "Лига справедливости",
-        "Ла-ла лэнд",
-        "Одержимость",
-        "Скотт Пилигрим против..."
-    ]
-};
-
-const advs = document.querySelectorAll('.promo__adv img');
-
-advs.forEach();
+    //download(JSON.stringify(textNodes), 'json.txt', 'text/plain');
+});
